@@ -3,20 +3,20 @@ package kuke.board.comment.service;
 import kuke.board.comment.entity.Comment;
 import kuke.board.comment.repository.CommentRepository;
 import kuke.board.comment.service.request.CommentCreateRequest;
+import kuke.board.comment.service.response.CommentPageResponse;
 import kuke.board.comment.service.response.CommentResponse;
 import kuke.board.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static java.util.function.Predicate.not;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-
     private final Snowflake snowflake = new Snowflake();
     private final CommentRepository commentRepository;
 
@@ -32,17 +32,14 @@ public class CommentService {
                         request.getWriterId()
                 )
         );
-
         return CommentResponse.from(comment);
     }
 
     private Comment findParent(CommentCreateRequest request) {
         Long parentCommentId = request.getParentCommentId();
-
-        if( parentCommentId == null) {
+        if ( parentCommentId == null) {
             return null;
         }
-
         return commentRepository.findById(parentCommentId)
                 .filter(not(Comment::getDeleted))
                 .filter(Comment::isRoot)
@@ -56,27 +53,25 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(Long commentId){
+    public void delete(Long commentId) {
         commentRepository.findById(commentId)
                 .filter(not(Comment::getDeleted))
                 .ifPresent(comment -> {
-                    if(hasChildren(comment)){
+                    if (hasChildren(comment)) {
                         comment.delete();
-                    } else{
+                    } else {
                         delete(comment);
-
                     }
                 });
     }
 
     private boolean hasChildren(Comment comment) {
-        Long count = commentRepository.countBy(comment.getArticleId(), comment.getCommentId(), 2L);
-        return count == 2;
+        return commentRepository.countBy(comment.getArticleId(), comment.getCommentId(), 2L) == 2;
     }
 
     private void delete(Comment comment) {
         commentRepository.delete(comment);
-        if(!comment.isRoot()){
+        if (!comment.isRoot()) {
             commentRepository.findById(comment.getParentCommentId())
                     .filter(Comment::getDeleted)
                     .filter(not(this::hasChildren))
@@ -84,4 +79,21 @@ public class CommentService {
         }
     }
 
+    public CommentPageResponse readAll(Long articleId, Long page, Long pageSize) {
+        return CommentPageResponse.of(
+                commentRepository.findAll(articleId, (page - 1) * pageSize, pageSize).stream()
+                        .map(CommentResponse::from)
+                        .toList(),
+                commentRepository.count(articleId, PageLimitCalculator.calculatePageLimit(page, pageSize, 10L))
+        );
+    }
+
+    public List<CommentResponse> readAll(Long articleId, Long lastParentCommentId, Long lastCommentId, Long limit) {
+        List<Comment> comments = lastParentCommentId == null || lastCommentId == null ?
+                commentRepository.findAllInfiniteScroll(articleId, limit) :
+                commentRepository.findAllInfiniteScroll(articleId, lastParentCommentId, lastCommentId, limit);
+        return comments.stream()
+                .map(CommentResponse::from)
+                .toList();
+    }
 }
