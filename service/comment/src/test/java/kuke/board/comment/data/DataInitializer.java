@@ -25,6 +25,7 @@ public class DataInitializer {
     static final int BULK_INSERT_SIZE = 2000;
     static final int EXECUTE_COUNT = 6000;
 
+
     @Test
     void initialize() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
@@ -43,7 +44,8 @@ public class DataInitializer {
         transactionTemplate.executeWithoutResult(status -> {
             Comment prev = null;
             for(int i = 0; i < BULK_INSERT_SIZE; i++) {
-                Comment comment = Comment.create(snowflake.nextId(),
+                Comment comment = Comment.create(
+                        snowflake.nextId(),
                         "content",
                         i % 2 == 0 ? null : prev.getCommentId(),
                         1L,

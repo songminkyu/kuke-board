@@ -20,7 +20,7 @@ public class Article {
     private Long articleId;
     private String title;
     private String content;
-    private Long boardId; //shard key
+    private Long boardId; // shard key
     private Long writerId;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -42,4 +42,5 @@ public class Article {
         this.content = content;
         modifiedAt = LocalDateTime.now();
     }
+
 }

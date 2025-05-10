@@ -1,10 +1,10 @@
 package kuke.board.article.service;
 
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.*;
 
-
+import static org.assertj.core.api.Assertions.assertThat;
 class PageLimitCalculatorTest {
+
     @Test
     void calculatePageLimitTest() {
         calculatePageLimitTest(1L, 30L, 10L, 301L);

@@ -14,18 +14,18 @@ public class CommentApiTest {
     RestClient restClient = RestClient.create("http://localhost:9001");
 
     @Test
-    void create(){
-        //첫번째 댓글 입력
+    void create() {
         CommentResponse response1 = createComment(new CommentCreateRequest(1L, "my comment1", null, 1L));
-        //상위 댓글의 첫번째 댓글
         CommentResponse response2 = createComment(new CommentCreateRequest(1L, "my comment2", response1.getCommentId(), 1L));
-        //상위 댓글의 첫번째 댓글
         CommentResponse response3 = createComment(new CommentCreateRequest(1L, "my comment3", response1.getCommentId(), 1L));
 
         System.out.println("commentId=%s".formatted(response1.getCommentId()));
         System.out.println("\tcommentId=%s".formatted(response2.getCommentId()));
         System.out.println("\tcommentId=%s".formatted(response3.getCommentId()));
 
+//        commentId=123694721668214784
+//          commentId=123694721986981888
+//          commentId=123694722045702144
     }
 
     CommentResponse createComment(CommentCreateRequest request) {
@@ -37,9 +37,9 @@ public class CommentApiTest {
     }
 
     @Test
-    void read(){
+    void read() {
         CommentResponse response = restClient.get()
-                .uri("/v1/comments/{commentId}", 179060865682051072L)
+                .uri("/v1/comments/{commentId}", 123694721668214784L)
                 .retrieve()
                 .body(CommentResponse.class);
 
@@ -47,13 +47,13 @@ public class CommentApiTest {
     }
 
     @Test
-    void delete(){
+    void delete() {
+        //        commentId=123694721668214784 - x
+        //          commentId=123694721986981888 - x
+        //          commentId=123694722045702144 - x
 
-        //commentId=179061928581599232
-        //	commentId=179061929433042944
-        //	commentId=179061929709867008
         restClient.delete()
-                .uri("/v1/comments/{commentId}",179061928581599232L)
+                .uri("/v1/comments/{commentId}", 123694722045702144L)
                 .retrieve();
     }
 
@@ -74,16 +74,16 @@ public class CommentApiTest {
 
         /**
          * 1번 페이지 수행 결과
-         comment.getCommentId() = 179060865682051072
-            comment.getCommentId() = 179060867179417600
-            comment.getCommentId() = 179060867334606848
-         comment.getCommentId() = 179061928581599232
-            comment.getCommentId() = 179061929433042944
-            comment.getCommentId() = 179061929709867008
-         comment.getCommentId() = 179065967874379776
-            comment.getCommentId() = 179065968025374733
-         comment.getCommentId() = 179065967874379777
-            comment.getCommentId() = 179065968008597505
+         * comment.getCommentId() = 123693535103893504
+         * 	comment.getCommentId() = 123693535468797952
+         * 	comment.getCommentId() = 123693535527518208
+         * comment.getCommentId() = 123696314740150272
+         * 	comment.getCommentId() = 123696314773704717
+         * comment.getCommentId() = 123696314740150273
+         * 	comment.getCommentId() = 123696314777899028
+         * comment.getCommentId() = 123696314740150274
+         * 	comment.getCommentId() = 123696314773704705
+         * comment.getCommentId() = 123696314740150275
          */
     }
 
@@ -120,21 +120,6 @@ public class CommentApiTest {
             }
             System.out.println("comment.getCommentId() = " + comment.getCommentId());
         }
-
-        /**
-         firstPage
-         comment.getCommentId() = 179060865682051072
-            comment.getCommentId() = 179060867179417600
-            comment.getCommentId() = 179060867334606848
-         comment.getCommentId() = 179061928581599232
-            comment.getCommentId() = 179061929433042944
-            comment.getCommentId() = 179061929709867008
-         secondPage
-         comment.getCommentId() = 179065967874379776
-            comment.getCommentId() = 179065968025374733
-         comment.getCommentId() = 179065967874379777
-            comment.getCommentId() = 179065968008597505
-         */
     }
 
     @Getter

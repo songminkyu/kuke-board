@@ -24,7 +24,8 @@ public class ArticleController {
     public ArticlePageResponse readAll(
             @RequestParam("boardId") Long boardId,
             @RequestParam("page") Long page,
-            @RequestParam("pageSize") Long pageSize) {
+            @RequestParam("pageSize") Long pageSize
+    ) {
         return articleService.readAll(boardId, page, pageSize);
     }
 
@@ -32,7 +33,7 @@ public class ArticleController {
     public List<ArticleResponse> readAllInfiniteScroll(
             @RequestParam("boardId") Long boardId,
             @RequestParam("pageSize") Long pageSize,
-            @RequestParam(value="lastArticleId", required = false) Long lastArticleId
+            @RequestParam(value = "lastArticleId", required = false) Long lastArticleId
     ) {
         return articleService.readAllInfiniteScroll(boardId, pageSize, lastArticleId);
     }
@@ -43,8 +44,8 @@ public class ArticleController {
     }
 
     @PutMapping("/v1/articles/{articleId}")
-    public ArticleResponse update(@PathVariable Long articleId,@RequestBody ArticleUpdateRequest request) {
-        return articleService.update(articleId,request);
+    public ArticleResponse update(@PathVariable Long articleId, @RequestBody ArticleUpdateRequest request) {
+        return articleService.update(articleId, request);
     }
 
     @DeleteMapping("/v1/articles/{articleId}")
@@ -52,4 +53,8 @@ public class ArticleController {
         articleService.delete(articleId);
     }
 
+    @GetMapping("/v1/articles/boards/{boardId}/count")
+    public Long count(@PathVariable Long boardId) {
+        return articleService.count(boardId);
+    }
 }

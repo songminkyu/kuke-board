@@ -1,12 +1,9 @@
 package kuke.board.article.api;
 
-import kuke.board.article.service.request.ArticleCreateRequest;
-import kuke.board.article.service.request.ArticleUpdateRequest;
 import kuke.board.article.service.response.ArticlePageResponse;
 import kuke.board.article.service.response.ArticleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
@@ -17,9 +14,11 @@ public class ArticleApiTest {
     RestClient restClient = RestClient.create("http://localhost:9000");
 
     @Test
-    void createTest(){
-        ArticleResponse articleResponse = create(new ArticleCreateRequest("mk song", "my content", 1L, 1L));
-        System.out.println("articleResponse = " + articleResponse);
+    void createTest() {
+        ArticleResponse response = create(new ArticleCreateRequest(
+                "hi", "my content", 1L, 1L
+        ));
+        System.out.println("response = " + response);
     }
 
     ArticleResponse create(ArticleCreateRequest request) {
@@ -31,8 +30,8 @@ public class ArticleApiTest {
     }
 
     @Test
-    void readTest(){
-        ArticleResponse response = read(177945412047552512L);
+    void readTest() {
+        ArticleResponse response = read(121530268440289280L);
         System.out.println("response = " + response);
     }
 
@@ -45,8 +44,8 @@ public class ArticleApiTest {
 
     @Test
     void updateTest() {
-        update(177945412047552512L);
-        ArticleResponse response = read(177945412047552512L);
+        update(121530268440289280L);
+        ArticleResponse response = read(121530268440289280L);
         System.out.println("response = " + response);
     }
 
@@ -60,7 +59,7 @@ public class ArticleApiTest {
     @Test
     void deleteTest() {
         restClient.delete()
-                .uri("/v1/articles/{articleId}", 177945412047552512L)
+                .uri("/v1/articles/{articleId}", 121530268440289280L)
                 .retrieve();
     }
 
@@ -72,9 +71,8 @@ public class ArticleApiTest {
                 .body(ArticlePageResponse.class);
 
         System.out.println("response.getArticleCount() = " + response.getArticleCount());
-
-        for(ArticleResponse article : response.getArticles()) {
-            System.out.println("article = " + article.getArticleId());
+        for (ArticleResponse article : response.getArticles()) {
+            System.out.println("articleId = " + article.getArticleId());
         }
     }
 
@@ -104,11 +102,31 @@ public class ArticleApiTest {
         }
     }
 
+    @Test
+    void countTest() {
+        ArticleResponse response = create(new ArticleCreateRequest("hi", "content", 1L, 2L));
+
+        Long count1 = restClient.get()
+                .uri("/v1/articles/boards/{boardId}/count", 2L)
+                .retrieve()
+                .body(Long.class);
+        System.out.println("count1 = " + count1); // 1
+
+        restClient.delete()
+                .uri("/v1/articles/{articleId}", response.getArticleId())
+                .retrieve();
+
+        Long count2 = restClient.get()
+                .uri("/v1/articles/boards/{boardId}/count", 2L)
+                .retrieve()
+                .body(Long.class);
+        System.out.println("count2 = " + count2); // 0
+    }
 
 
     @Getter
     @AllArgsConstructor
-    static class ArticleCreateRequest{
+    static class ArticleCreateRequest {
         private String title;
         private String content;
         private Long writerId;
@@ -121,4 +139,5 @@ public class ArticleApiTest {
         private String title;
         private String content;
     }
+
 }

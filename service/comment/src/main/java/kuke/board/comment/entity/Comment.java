@@ -20,7 +20,7 @@ public class Comment {
     private Long commentId;
     private String content;
     private Long parentCommentId;
-    private Long articleId; //shard key
+    private Long articleId; // shard key
     private Long writerId;
     private Boolean deleted;
     private LocalDateTime createdAt;
@@ -37,11 +37,11 @@ public class Comment {
         return comment;
     }
 
-    public boolean isRoot(){
+    public boolean isRoot() {
         return parentCommentId.longValue() == commentId;
     }
 
-    public void delete(){
+    public void delete() {
         deleted = true;
     }
 }

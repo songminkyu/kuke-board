@@ -25,6 +25,7 @@ public class DataInitializer {
     static final int BULK_INSERT_SIZE = 2000;
     static final int EXECUTE_COUNT = 6000;
 
+
     @Test
     void initialize() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(10);

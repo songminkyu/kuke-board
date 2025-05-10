@@ -10,17 +10,15 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 public class ArticleResponse {
-
-    @Id
     private Long articleId;
     private String title;
     private String content;
-    private Long boardId; //shard key
+    private Long boardId;
     private Long writerId;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static ArticleResponse from(Article article){
+    public static ArticleResponse from(Article article) {
         ArticleResponse response = new ArticleResponse();
         response.articleId = article.getArticleId();
         response.title = article.getTitle();
