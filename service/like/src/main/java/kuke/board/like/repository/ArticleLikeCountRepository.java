@@ -22,7 +22,7 @@ public interface ArticleLikeCountRepository extends JpaRepository<ArticleLikeCou
             value = "update article_like_count set like_count = like_count + 1 where article_id = :articleId",
             nativeQuery = true
     )
-    @Modifying
+    @Modifying //update 쿼리 진행시 @Modifying 필수
     int increase(@Param("articleId") Long articleId);
 
     @Query(
