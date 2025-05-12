@@ -137,6 +137,8 @@ public class CommentServiceV2 {
                         .map(CommentResponse::from)
                         .toList(),
                 commentRepository.count(articleId, PageLimitCalculator.calculatePageLimit(page, pageSize, 10L))
+                //실시간 조회 할때는 아래처럼 변경 해서 사용 가능
+                //count(articleId); 
         );
     }
 
