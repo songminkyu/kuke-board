@@ -1,17 +1,14 @@
-package kuke.board.common.auth;
+package kuke.board.common.bezkoder.springjwt.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
@@ -117,7 +114,7 @@ public class AuthControllerTest {
                 .body(signupRequest)
                 .retrieve()
                 .body(String.class);
-        
+
         // 응답 검증
         JsonNode jsonNode = objectMapper.readTree(response);
         assertNotNull(jsonNode.get("accessToken").asText());
