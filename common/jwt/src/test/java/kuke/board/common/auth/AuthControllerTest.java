@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kuke.board.common.bezkoder.springjwt.payload.request.LoginRequest;
 import kuke.board.common.bezkoder.springjwt.payload.request.SignupRequest;
 
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class AuthControllerTest {
 
     private RestClient restClient;
