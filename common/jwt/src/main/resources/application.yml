@@ -1,17 +1,20 @@
+server.port: 8081
 spring:
+  application:
+    name: kuke-board-view-service
   datasource:
-    url: jdbc:mysql://localhost:3306/testdb_spring?useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/auth
     username: root
-    password: 123456
+    password: root
   jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+    show-sql: true
     hibernate:
-      ddl-auto: update
-
+      ddl-auto: none
 # App Properties
 bezkoder:
   app:
-    jwtSecret: '======================BezKoder=Spring==========================='
+    jwtSecret: 'UClsMtQvD6Y9jNBfOXE5mYHbJV3ZjY7RmHnwzlXBDWmvrGpNlsWXpzHIDPGOKnW2i5gfClk6h92Bm5YX4kCsXg=='
     jwtExpirationMs: 86400000
