@@ -98,19 +98,12 @@ public class AuthControllerTest {
     @Test
     void testAuthenticateUser() throws JsonProcessingException {
         // 테스트용 사용자 등록
-        SignupRequest testSignupRequest = new SignupRequest();
-        testSignupRequest.setUsername("authuser" + System.currentTimeMillis());
-        testSignupRequest.setEmail("authuser" + System.currentTimeMillis() + "@example.com");
-        testSignupRequest.setPassword("password123");
-        Set<String> roles = new HashSet<>();
-        roles.add("user");
-        testSignupRequest.setRole(roles);
-        
+
         try {
             restClient.post()
                     .uri("/api/auth/signup")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(testSignupRequest)
+                    .body(signupRequest)
                     .retrieve()
                     .body(String.class);
         } catch (Exception e) {
@@ -118,22 +111,18 @@ public class AuthControllerTest {
         }
         
         // 로그인 요청
-        LoginRequest authLoginRequest = new LoginRequest();
-        authLoginRequest.setUsername(testSignupRequest.getUsername());
-        authLoginRequest.setPassword("password123");
-        
         String response = restClient.post()
                 .uri("/api/auth/signin")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(authLoginRequest)
+                .body(signupRequest)
                 .retrieve()
                 .body(String.class);
         
         // 응답 검증
         JsonNode jsonNode = objectMapper.readTree(response);
-        assertNotNull(jsonNode.get("token").asText());
-        assertEquals(testSignupRequest.getUsername(), jsonNode.get("username").asText());
-        assertEquals(testSignupRequest.getEmail(), jsonNode.get("email").asText());
+        assertNotNull(jsonNode.get("accessToken").asText());
+        assertEquals(signupRequest.getUsername(), jsonNode.get("username").asText());
+        assertEquals(signupRequest.getEmail(), jsonNode.get("email").asText());
         assertTrue(jsonNode.get("roles").isArray());
     }
 }
