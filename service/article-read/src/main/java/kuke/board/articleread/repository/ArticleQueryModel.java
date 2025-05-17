@@ -1,6 +1,7 @@
 package kuke.board.articleread.repository;
 
 import kuke.board.articleread.client.ArticleClient;
+import kuke.board.articleread.dto.ArticleResponse;
 import kuke.board.common.event.payload.*;
 import lombok.Getter;
 
@@ -32,7 +33,7 @@ public class ArticleQueryModel {
         return articleQueryModel;
     }
 
-    public static ArticleQueryModel create(ArticleClient.ArticleResponse article, Long commentCount, Long likeCount) {
+    public static ArticleQueryModel create(ArticleResponse article, Long commentCount, Long likeCount) {
         ArticleQueryModel articleQueryModel = new ArticleQueryModel();
         articleQueryModel.articleId = article.getArticleId();
         articleQueryModel.title = article.getTitle();

@@ -1,6 +1,7 @@
 package kuke.board.articleread.client;
 
 import jakarta.annotation.PostConstruct;
+import kuke.board.articleread.dto.ArticleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -92,16 +93,5 @@ public class ArticleClient {
         private Long articleCount;
 
         public static ArticlePageResponse EMPTY = new ArticlePageResponse(List.of(), 0L);
-    }
-
-    @Getter
-    public static class ArticleResponse {
-        private Long articleId;
-        private String title;
-        private String content;
-        private Long boardId;
-        private Long writerId;
-        private LocalDateTime createdAt;
-        private LocalDateTime modifiedAt;
     }
 }
