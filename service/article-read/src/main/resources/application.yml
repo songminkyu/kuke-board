@@ -7,7 +7,7 @@ spring:
       host: 127.0.0.1
       port: 6379
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: localhost:10000
     consumer:
       group-id: kuke-board-article-read-service
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
