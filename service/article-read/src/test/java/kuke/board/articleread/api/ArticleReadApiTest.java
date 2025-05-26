@@ -7,6 +7,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ArticleReadApiTest {
     RestClient articleReadRestClient = RestClient.create("http://localhost:9005");
@@ -20,6 +21,7 @@ public class ArticleReadApiTest {
                 .body(ArticleReadResponse.class);
 
         System.out.println("response = " + response);
+        assertThat(response.getArticleId()).isEqualTo(121558005770702848L);
     }
 
     @Test
