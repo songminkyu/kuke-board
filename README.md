@@ -35,7 +35,7 @@ kuke-board/
     └── article-read        # 게시글 조회 최적화
 ```
 
-##실행 순서
+## 실행 순서
  - ArticleApplication
  - CommentApplication
  - LikeApplication
