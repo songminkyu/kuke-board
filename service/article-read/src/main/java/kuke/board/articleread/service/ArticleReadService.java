@@ -4,7 +4,6 @@ import kuke.board.articleread.client.ArticleClient;
 import kuke.board.articleread.client.CommentClient;
 import kuke.board.articleread.client.LikeClient;
 import kuke.board.articleread.client.ViewClient;
-import kuke.board.articleread.dto.ArticleResponse;
 import kuke.board.articleread.repository.ArticleIdListRepository;
 import kuke.board.articleread.repository.ArticleQueryModel;
 import kuke.board.articleread.repository.ArticleQueryModelRepository;
@@ -102,7 +101,7 @@ public class ArticleReadService {
         }
         log.info("[ArticleReadService.readAllArticleIds] return origin data.");
         return articleClient.readAll(boardId, page, pageSize).getArticles().stream()
-                .map(ArticleResponse::getArticleId)
+                .map(ArticleClient.ArticleResponse::getArticleId)
                 .toList();
     }
 
@@ -130,7 +129,7 @@ public class ArticleReadService {
         }
         log.info("[ArticleReadService.readAllInfiniteScrollArticleIds] return origin data.");
         return articleClient.readAllInfiniteScroll(boardId, lastArticleId, pageSize).stream()
-                .map(ArticleResponse::getArticleId)
+                .map(ArticleClient.ArticleResponse::getArticleId)
                 .toList();
     }
 

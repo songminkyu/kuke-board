@@ -19,7 +19,7 @@ public class ArticleLikeCount {
     private Long articleId; // shard key
     private Long likeCount;
     @Version
-    private Long version; //낙관적 락 확인 용도
+    private Long version;
 
     public static ArticleLikeCount init(Long articleId, Long likeCount) {
         ArticleLikeCount articleLikeCount = new ArticleLikeCount();
