@@ -35,6 +35,13 @@ kuke-board/
     └── article-read        # 게시글 조회 최적화
 ```
 
+##실행 순서
+ - ArticleApplication
+ - CommentApplication
+ - LikeApplication
+ - ViewApplication
+ - ArticleReadApplication
+ - HotArticleApplication
 
 ## 기술 스택
 
