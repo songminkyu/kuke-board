@@ -16,6 +16,11 @@ import java.util.List;
 public class CommentControllerV2 {
     private final CommentServiceV2 commentService;
 
+    @GetMapping("/v2/comments/test")
+    public String readTest() {
+        return "comments test";
+    }
+
     @GetMapping("/v2/comments/{commentId}")
     public CommentResponse read(
             @PathVariable("commentId") Long commentId

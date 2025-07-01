@@ -15,7 +15,7 @@ public class ArticleReadApiTest {
     @Test
     void readTest() {
         ArticleReadResponse response = articleReadRestClient.get()
-                .uri("/v1/articles/{articleId}", 121558005770702848L)
+                .uri("/v1/article-read/{articleId}", 121558005770702848L)
                 .retrieve()
                 .body(ArticleReadResponse.class);
 
@@ -25,7 +25,7 @@ public class ArticleReadApiTest {
     @Test
     void readAllTest() {
         ArticleReadPageResponse response1 = articleReadRestClient.get()
-                .uri("/v1/articles?boardId=%s&page=%s&pageSize=%s".formatted(1L, 3000L, 5))
+                .uri("/v1/article-read?boardId=%s&page=%s&pageSize=%s".formatted(1L, 3000L, 5))
                 .retrieve()
                 .body(ArticleReadPageResponse.class);
 
@@ -48,7 +48,7 @@ public class ArticleReadApiTest {
     @Test
     void readAllInfiniteScrollTest() {
         List<ArticleReadResponse> response1 = articleReadRestClient.get()
-                .uri("/v1/articles/infinite-scroll?boardId=%s&pageSize=%s&lastArticleId=%s".formatted(1L, 5L, 126170915769933824L))
+                .uri("/v1/article-read/infinite-scroll?boardId=%s&pageSize=%s&lastArticleId=%s".formatted(1L, 5L, 126170915769933824L))
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<ArticleReadResponse>>() {
                 });

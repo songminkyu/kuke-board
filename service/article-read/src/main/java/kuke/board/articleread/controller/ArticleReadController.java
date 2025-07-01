@@ -16,12 +16,17 @@ import java.util.List;
 public class ArticleReadController {
     private final ArticleReadService articleReadService;
 
-    @GetMapping("/v1/articles/{articleId}")
+    @GetMapping("/v1/article-read/test")
+    public String readTest() {
+        return "article-read test";
+    }
+
+    @GetMapping("/v1/article-read/{articleId}")
     public ArticleReadResponse read(@PathVariable("articleId") Long articleId) {
         return articleReadService.read(articleId);
     }
 
-    @GetMapping("/v1/articles")
+    @GetMapping("/v1/article-read")
     public ArticleReadPageResponse readAll(
             @RequestParam("boardId") Long boardId,
             @RequestParam("page") Long page,
@@ -30,7 +35,7 @@ public class ArticleReadController {
         return articleReadService.readAll(boardId, page, pageSize);
     }
 
-    @GetMapping("/v1/articles/infinite-scroll")
+    @GetMapping("/v1/article-read/infinite-scroll")
     public List<ArticleReadResponse> readAllInfiniteScroll(
             @RequestParam("boardId") Long boardId,
             @RequestParam(value = "lastArticleId", required = false) Long lastArticleId,

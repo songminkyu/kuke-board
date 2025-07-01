@@ -1,0 +1,18 @@
+
+article
+server.port: 9000
+
+article-read
+server.port: 9005
+
+comment
+server.port: 9001
+
+hot-article
+server.port: 9004
+
+like
+server.port: 9002
+
+view
+server.port: 9003

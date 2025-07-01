@@ -1,0 +1,19 @@
+dependencies {
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // OpenTelemetry
+    runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${rootProject.ext.otelVersion}"
+
+    // Micrometer
+    implementation "io.micrometer:micrometer-registry-prometheus:${rootProject.ext.micrometerVersion}"
+
+    // Spring Cloud
+    implementation 'org.springframework.cloud:spring-cloud-config-server'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${rootProject.ext.springCloudVersion}"
+    }
+}

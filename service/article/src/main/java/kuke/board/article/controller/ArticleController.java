@@ -15,6 +15,11 @@ import java.util.List;
 public class ArticleController {
     private final ArticleService articleService;
 
+    @GetMapping("/v1/articles/test")
+    public String readTest() {
+        return "articles test";
+    }
+
     @GetMapping("/v1/articles/{articleId}")
     public ArticleResponse read(@PathVariable Long articleId) {
         return articleService.read(articleId);

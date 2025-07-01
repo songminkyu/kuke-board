@@ -19,3 +19,12 @@ spring:
       port: 6379
   kafka:
     bootstrap-servers: 127.0.0.1:10000
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
