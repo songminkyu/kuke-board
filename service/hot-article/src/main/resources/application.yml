@@ -13,6 +13,22 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       enable-auto-commit: false
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
 endpoints:
   kuke-board-article-service:
     url: http://127.0.0.1:9000
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://kukeboard:root@localhost:8070/eureka/

@@ -1,8 +1,6 @@
-version: '3.8'
-
 networks:
   kafka_network:
-  
+
 volumes:
   mysql-data:
     driver: local
@@ -14,7 +12,9 @@ volumes:
     driver: local
   Kafka02:
     driver: local
-    
+  postgresql:
+    driver: local
+
 services:
   mysql:
     image: mysql:8.0.38
@@ -42,24 +42,21 @@ services:
     restart: unless-stopped
     container_name: Kafka00Container
     ports:
-      - '9092:9092' # 내부 네트워크 통신을 위한 PLAINTEXT 리스너
-      - '10000:10000' # 외부 접근을 위한 EXTERNAL 리스너
+      - '9092:9092'
+      - '10000:10000'
     environment:
-      # KRaft 설정
-      - KAFKA_ENABLE_KRAFT=yes # KRaft 모드 활성화
+      - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_BROKER_ID=0
       - KAFKA_CFG_NODE_ID=0
-      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw # 고유 클러스터 ID, 모든 브로커에 동일하게 설정
+      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@Kafka00Service:9093,1@Kafka01Service:9093,2@Kafka02Service:9093
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      # 리스너 설정
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:10000
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://Kafka00Service:9092,EXTERNAL://localhost:10000
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      # 클러스터 설정
       - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=2
       - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=2
       - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2
@@ -73,24 +70,21 @@ services:
     restart: unless-stopped
     container_name: Kafka01Container
     ports:
-      - '9093:9092' # 내부 네트워크 통신을 위한 PLAINTEXT 리스너
-      - '10001:10000' # 외부 접근을 위한 EXTERNAL 리스너
+      - '9093:9092'
+      - '10001:10000'
     environment:
-      # KRaft 설정
-      - KAFKA_ENABLE_KRAFT=yes # KRaft 모드 활성화
+      - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_BROKER_ID=1
       - KAFKA_CFG_NODE_ID=1
-      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw # 고유 클러스터 ID, 모든 브로커에 동일하게 설정
+      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@Kafka00Service:9093,1@Kafka01Service:9093,2@Kafka02Service:9093
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      # 리스너 설정
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:10000
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://Kafka01Service:9092,EXTERNAL://localhost:10001
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      # 클러스터 설정
       - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=2
       - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=2
       - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2
@@ -104,24 +98,21 @@ services:
     restart: unless-stopped
     container_name: Kafka02Container
     ports:
-      - '9094:9092' # 내부 네트워크 통신을 위한 PLAINTEXT 리스너
-      - '10002:10000' # 외부 접근을 위한 EXTERNAL 리스너
+      - '9094:9092'
+      - '10002:10000'
     environment:
-      # KRaft 설정
-      - KAFKA_ENABLE_KRAFT=yes # KRaft 모드 활성화
+      - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_BROKER_ID=2
       - KAFKA_CFG_NODE_ID=2
-      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw # 고유 클러스터 ID, 모든 브로커에 동일하게 설정
+      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@Kafka00Service:9093,1@Kafka01Service:9093,2@Kafka02Service:9093
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      # 리스너 설정
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:10000
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://Kafka02Service:9092,EXTERNAL://localhost:10002
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      # 클러스터 설정
       - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=2
       - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=2
       - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2
@@ -135,7 +126,7 @@ services:
     restart: unless-stopped
     container_name: KafkaWebUiContainer
     ports:
-      - '8085:8080' # 호스트의 8085 포트를 컨테이너의 8080 포트에 바인딩
+      - '8085:8080'
     environment:
       - KAFKA_CLUSTERS_0_NAME=Local-Kraft-Cluster
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=Kafka00Service:9092,Kafka01Service:9092,Kafka02Service:9092
@@ -148,3 +139,57 @@ services:
       - Kafka02Service
     networks:
       - kafka_network
+
+  postgresql:
+    container_name: postgresql
+    image: bitnami/postgresql:15
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRESQL_USERNAME: easybank
+      POSTGRESQL_PASSWORD: root
+      POSTGRESQL_DATABASE: keycloak
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U easybank -d keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - ./postgresql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - postgresql:/bitnami/postgresql
+    networks:
+      - kafka_network
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:22.0.4
+    ports:
+      - 7080:7080
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgresql:5432/keycloak
+      KC_DB_USERNAME: easybank
+      KC_DB_PASSWORD: root
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
+      KC_FEATURES: scripts
+      KC_HTTP_PORT: 7080
+      KC_HTTPS_PORT: 9443
+    command: "start-dev --import-realm"
+    networks:
+      - kafka_network
+    healthcheck:
+      test: 'bash /opt/keycloak/health-check.sh'
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    volumes:
+      - ./realm-config:/opt/keycloak/data/import
+      - ./realm-config/keycloak-health-check.sh:/opt/keycloak/health-check.sh

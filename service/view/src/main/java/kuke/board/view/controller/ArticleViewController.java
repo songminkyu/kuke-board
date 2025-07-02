@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticleViewController {
     private final ArticleViewService articleViewService;
 
+    @GetMapping("/v1/article-views/test")
+    public String readTest() {
+        return "article-views test";
+    }
+    
     @PostMapping("/v1/article-views/articles/{articleId}/users/{userId}")
     public Long increase(
             @PathVariable("articleId") Long articleId,

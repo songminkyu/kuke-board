@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleLikeController {
     private final ArticleLikeService articleLikeService;
 
+    @GetMapping("/v1/article-likes/test")
+    public String readTest() {
+        return "article-likes test";
+    }
+
     @GetMapping("/v1/article-likes/articles/{articleId}/users/{userId}")
     public ArticleLikeResponse read(
             @PathVariable("articleId") Long articleId,

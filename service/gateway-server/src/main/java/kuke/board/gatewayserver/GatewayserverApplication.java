@@ -48,7 +48,28 @@ public class GatewayserverApplication {
 								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
 								.circuitBreaker(config -> config.setName("commentCircuitBreaker")
 										.setFallbackUri("forward:/contactSupport")))
-						.uri("lb://kuke-board-comment-service")).build();
+						.uri("lb://kuke-board-comment-service"))
+					.route(p -> p
+						.path("/v1/hot-articles/**")
+						.filters( f -> f.rewritePath("/v1/hot-articles/(?<segment>.*)","/v1/hot-articles/${segment}")
+								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+								.circuitBreaker(config -> config.setName("hotArticlesCircuitBreaker")
+										.setFallbackUri("forward:/contactSupport")))
+						.uri("lb://kuke-board-hot-article-service"))
+					.route(p -> p
+						.path("/v1/article-likes/**")
+						.filters( f -> f.rewritePath("/v1/article-likes/(?<segment>.*)","/v1/article-likes/${segment}")
+								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+								.circuitBreaker(config -> config.setName("articleLikesCircuitBreaker")
+										.setFallbackUri("forward:/contactSupport")))
+						.uri("lb://kuke-board-like-service"))
+					.route(p -> p
+						.path("/v1/article-views/**")
+						.filters( f -> f.rewritePath("/v1/article-views/(?<segment>.*)","/v1/article-views/${segment}")
+								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+								.circuitBreaker(config -> config.setName("articleViewsCircuitBreaker")
+										.setFallbackUri("forward:/contactSupport")))
+						.uri("lb://kuke-board-view-service")).build();
 	}
 
 	@Bean

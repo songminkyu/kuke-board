@@ -44,7 +44,7 @@ management:
 info:
   app:
     name: "gateway-server"
-    description: "Eazy Bank Gateway Server Application"
+    description: "KukeBoard Gateway Server Application"
     version: "1.0.0"
 
 logging:

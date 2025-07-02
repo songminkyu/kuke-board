@@ -21,9 +21,12 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
         serverHttpSecurity.authorizeExchange(exchanges -> exchanges.pathMatchers(HttpMethod.GET).permitAll()
-                .pathMatchers("/v1/articles/**").hasRole("ARTICLES")
-                .pathMatchers("/eazybank/cards/**").hasRole("CARDS")
-                .pathMatchers("/eazybank/loans/**").hasRole("LOANS"))
+                .pathMatchers("/v1/articles/**").hasRole("kuke-board-article-service")
+                .pathMatchers("/v1/article-read/**").hasRole("kuke-board-article-read-service")
+                .pathMatchers("/v2/comments/**").hasRole("kuke-board-comment-service")
+                .pathMatchers("/v1/hot-articles/**").hasRole("kuke-board-hot-article-service")
+                .pathMatchers("/v1/article-likes/**").hasRole("kuke-board-like-service")
+                .pathMatchers("/v1/article-views/**").hasRole("kuke-board-view-service"))
                 .oauth2ResourceServer(oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec
                         .jwt(jwtSpec -> jwtSpec.jwtAuthenticationConverter(grantedAuthoritiesExtractor())));
         serverHttpSecurity.csrf(csrfSpec -> csrfSpec.disable());

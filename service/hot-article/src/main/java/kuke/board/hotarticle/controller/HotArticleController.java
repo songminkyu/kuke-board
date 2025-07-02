@@ -14,6 +14,11 @@ import java.util.List;
 public class HotArticleController {
     private final HotArticleService hotArticleService;
 
+    @GetMapping("/v1/hot-articles/test")
+    public String readTest() {
+        return "hot-articles test";
+    }
+
     @GetMapping("/v1/hot-articles/articles/date/{dateStr}")
     public List<HotArticleResponse> readAll(
             @PathVariable("dateStr") String dateStr

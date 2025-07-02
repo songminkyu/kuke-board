@@ -19,6 +19,12 @@ spring:
       port: 6379
   kafka:
     bootstrap-servers: 127.0.0.1:10000
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+  config:
+    import: "optional:configserver:http://localhost:8071/"
 
 eureka:
   instance:
@@ -27,4 +33,4 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
+      defaultZone: http://kukeboard:root@localhost:8070/eureka/
