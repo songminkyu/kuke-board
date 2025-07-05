@@ -55,13 +55,47 @@ logging:
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
-resilience4j.circuitbreaker:
-  configs:
-    default:
-      slidingWindowSize: 10
-      permittedNumberOfCallsInHalfOpenState: 2
-      failureRateThreshold: 50
-      waitDurationInOpenState: 10000
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 2
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        registerHealthIndicator: true
+        recordExceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+        ignoreExceptions:
+          - org.springframework.web.client.HttpClientErrorException
+
+      critical:  # 중요 서비스용
+        slidingWindowSize: 20
+        failureRateThreshold: 30
+        waitDurationInOpenState: 20s
+        slowCallDurationThreshold: 5s
+        slowCallRateThreshold: 50
+
+    instances:
+      articlesCircuitBreaker:
+        baseConfig: default
+      articleLikesCircuitBreaker:
+        baseConfig: critical  # 좋아요는 중요도가 높음
+      articleViewsCircuitBreaker:
+        baseConfig: default
+        waitDurationInOpenState: 5s  # 조회수는 빠른 복구
+
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 10s
+    instances:
+      articlesCircuitBreaker:
+        baseConfig: default
+      articleLikesCircuitBreaker:
+        timeoutDuration: 5s  # 좋아요는 빠른 응답 필요
 
 eureka:
   instance:
