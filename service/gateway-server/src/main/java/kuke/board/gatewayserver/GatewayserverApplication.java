@@ -25,6 +25,8 @@ public class GatewayserverApplication {
 		SpringApplication.run(GatewayserverApplication.class, args);
 	}
 
+	/*
+	//코드기반에서 application.yml로 설정 이전
 	@Bean
 	public RouteLocator kukeBoardRouteConfig(RouteLocatorBuilder routeLocatorBuilder) {
 		return routeLocatorBuilder.routes()
@@ -71,7 +73,8 @@ public class GatewayserverApplication {
 										.setFallbackUri("forward:/contactSupport")))
 						.uri("lb://kuke-board-view-service")).build();
 	}
-
+	*/
+	
 	@Bean
 	public RedisRateLimiter redisRateLimiter() {
 		return new RedisRateLimiter(1, 1, 1);

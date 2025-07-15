@@ -12,6 +12,73 @@ spring:
         locator:
           enabled: false
           lowerCaseServiceId: true
+      routes:
+        - id: kuke-board-article-service
+          uri: lb://kuke-board-article-service
+          predicates:
+            - Path=/v1/articles/**
+          filters:
+            - RewritePath=/v1/articles/(?<segment>.*)","/v1/articles/$\{segment}"
+            - name: CircuitBreaker
+              args:
+                name: articlesCircuitBreaker
+                fallbackUri: forward:/contactSupport
+
+        - id: kuke-board-article-read-service
+          uri: lb://kuke-board-article-read-service
+          predicates:
+            - Path=/v1/article-read/**
+          filters:
+            - RewritePath=/v1/article-read/(?<segment>.*)","/v1/article-read/$\{segment}"
+            - name: CircuitBreaker
+              args:
+                name: articleReadCircuitBreaker
+                fallbackUri: forward:/contactSupport
+
+        - id: kuke-board-comment-service
+          uri: lb://kuke-board-comment-service
+          predicates:
+            - Path=/v2/comment/**
+          filters:
+            - RewritePath=/v2/comment/(?<segment>.*)","/v2/comment/$\{segment}"
+            - name: CircuitBreaker
+              args:
+                name: commentCircuitBreaker
+                fallbackUri: forward:/contactSupport
+
+        - id: kuke-board-hot-article-service
+          uri: lb://kuke-board-hot-article-service
+          predicates:
+            - Path=/v1/hot-articles/**
+          filters:
+            - RewritePath=/v1/hot-articles/(?<segment>.*)","/v1/hot-articles/$\{segment}"
+            - name: CircuitBreaker
+              args:
+                name: hotArticlesCircuitBreaker
+                fallbackUri: forward:/contactSupport
+
+        - id: kuke-board-like-service
+          uri: lb://kuke-board-like-service
+          predicates:
+            - Path=/v1/article-likes/**
+          filters:
+            - RewritePath=/v1/article-likes/(?<segment>.*)","/v1/article-likes/$\{segment}"
+            - name: CircuitBreaker
+              args:
+                name: articleLikesCircuitBreaker
+                fallbackUri: forward:/contactSupport
+
+        - id: kuke-board-view-service
+          uri: lb://kuke-board-view-service
+          predicates:
+            - Path=/v1/article-views/**
+          filters:
+            - RewritePath=/v1/article-views/(?<segment>.*)","/v1/article-views/$\{segment}"
+            - name: CircuitBreaker
+              args:
+                name: articleViewsCircuitBreaker
+                fallbackUri: forward:/contactSupport
+
       httpclient:
         connect-timeout: 1000
         response-timeout: 10s
